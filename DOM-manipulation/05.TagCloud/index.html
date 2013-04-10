@@ -1,0 +1,37 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Tag Cloud - Telerik JavaScript Part 2 Course (2013) homework</title>
+<link rel="stylesheet" href="css/main.css" />
+<body>
+  <h1>Generate tag cloud</h1>
+
+  <form>
+    <fieldset>
+      <label>
+        Tags
+        <textarea id=tag-input rows=5 >javascript JavaScript HTML HTML5 CSS CSS3 ecmascript ECMAScript EcmaScript "HTML5 rocks"</textarea>
+      </label>
+    </fieldset>
+
+    <button type=submit >Generate</button>
+
+    <fieldset>
+      <legend>Font Size</legend>
+
+      <label>
+        Min Font Size (px)
+        <input type=range id=min-font-size min=8 max=16 />
+      </label>
+
+      <label>
+        Max Font Size (px)
+        <input type=range id=max-font-size min=16 max=32 />
+      </label>
+
+    </fieldset>
+  </form>
+
+  <output></output>
+
+  <script src="js/main.js"></script>
+</body>
