@@ -37,7 +37,8 @@
       countDiff = maxCount - minCount,
       minFontSize = this.getMinFontSize(),
       maxFontSize = this.getMaxFontSize(),
-      fontSizeDiff = maxFontSize - minFontSize;
+      fontSizeDiff = maxFontSize - minFontSize,
+      tempTagContainer = document.createDocumentFragment();
 
     for (var tag in this.tagToCount) {
       var tagEl = createTagEl(tag),
@@ -47,8 +48,12 @@
 
       tagEl.style.fontSize = relativeFontSize + 'px';
 
-      this.el.appendChild(tagEl);
+      tempTagContainer.appendChild(tagEl);
     }
+
+    this.el.appendChild(tempTagContainer);
+
+    this.highlight();
   };
 
   TagCloud.prototype.addTag = function (tag) {
@@ -101,6 +106,21 @@
   TagCloud.prototype.setMaxFontSize = function (size) {
     this.maxFontSize = size;
     return this;
+  };
+
+  TagCloud.prototype.highlight = function () {
+    var style = this.el.style;
+
+    style.webkitTransition = 'none';
+    style.transition = 'none';
+    style.backgroundColor = 'orange';
+
+    //force application of above style to trigger the transition
+    this.el.offsetWidth;
+
+    style.webkitTransition = 'all 1s';
+    style.transition = 'all 1s';
+    style.backgroundColor = 'white';
   };
 
   var tagInputEl = document.querySelector('#tag-input'),
