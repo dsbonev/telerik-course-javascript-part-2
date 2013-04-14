@@ -17,6 +17,8 @@
 
   function TagCloud(el) {
     this.el = el;
+    this.setMinFontSize(16);
+    this.setMaxFontSize(32);
   }
 
   TagCloud.prototype.setTags = function (tagText) {
@@ -95,7 +97,7 @@
   };
 
   TagCloud.prototype.setMinFontSize = function (size) {
-    this.minFontSize = size;
+    this.minFontSize = size || 16;
     return this;
   };
 
@@ -104,7 +106,7 @@
   };
 
   TagCloud.prototype.setMaxFontSize = function (size) {
-    this.maxFontSize = size;
+    this.maxFontSize = size || 32;
     return this;
   };
 
@@ -124,6 +126,8 @@
   };
 
   var tagInputEl = document.querySelector('#tag-input'),
+    minFontSizeInputEl = document.querySelector('#min-font-size'),
+    maxFontSizeInputEl = document.querySelector('#max-font-size'),
     tagCloud = new TagCloud(document.querySelector('output'));
 
   tagCloud.setTags(tagInputEl.value);
@@ -136,19 +140,28 @@
     tagCloud.showTags();
   });
 
-  addEventListener('#min-font-size', 'change', function (event) {
-    tagCloud.setMinFontSize(event.target.valueAsNumber);
-    tagCloud.showTags();
-  });
+  if (minFontSizeInputEl.type === 'range') {
+    addEventListener('#min-font-size', 'change', function (event) {
+      tagCloud.setMinFontSize(event.target.valueAsNumber);
+      tagCloud.showTags();
+    });
 
-  tagCloud.setMinFontSize(document.querySelector('#min-font-size').valueAsNumber);
+    tagCloud.setMinFontSize(minFontSizeInputEl.valueAsNumber);
 
-  addEventListener('#max-font-size', 'change', function (event) {
-    tagCloud.setMaxFontSize(event.target.valueAsNumber);
-    tagCloud.showTags();
-  });
+    addEventListener('#max-font-size', 'change', function (event) {
+      tagCloud.setMaxFontSize(event.target.valueAsNumber);
+      tagCloud.showTags();
+    });
 
-  tagCloud.setMaxFontSize(document.querySelector('#max-font-size').valueAsNumber);
+    tagCloud.setMaxFontSize(maxFontSizeInputEl.valueAsNumber);
+
+  } else {
+    minFontSizeInputEl.style.display = 'none';
+    maxFontSizeInputEl.style.display = 'none';
+    var rangeUnsupportedMessage = 'Your browser does not support input with type "range"!';
+    maxFontSizeInputEl.parentElement.appendChild(document.createTextNode(rangeUnsupportedMessage));
+
+  }
 
   tagCloud.showTags();
 })();
