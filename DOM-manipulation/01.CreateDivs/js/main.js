@@ -40,7 +40,7 @@
         getRandomInt(0, 255),
         getRandomInt(0, 255),
         getRandomInt(0, 255),
-        getRandomInt(0, 255)
+        getRandomInt(1, 10) / 10
       ].join(', ') + ')';
   }
 
