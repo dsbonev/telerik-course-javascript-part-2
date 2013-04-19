@@ -5,16 +5,16 @@
   var extend = (function () {
     function Proxy() {}
 
-    return function (Child, Parent, protoProps) {
+    return function (Child, Parent, childPrototypeProps) {
       Proxy.prototype = Parent.prototype;
       Child.prototype = new Proxy();
       Child.prototype.constructor = Child;
 
-      protoProps = protoProps || {};
+      childPrototypeProps = childPrototypeProps || {};
 
-      for (var prop in protoProps) {
-        if (protoProps.hasOwnProperty(prop)) {
-          Child.prototype[prop] = protoProps[prop];
+      for (var prop in childPrototypeProps) {
+        if (childPrototypeProps.hasOwnProperty(prop)) {
+          Child.prototype[prop] = childPrototypeProps[prop];
         }
       }
     };
