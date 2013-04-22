@@ -1,0 +1,23 @@
+
+#solutions a::before {
+  content: attr(href);
+}
+
+ol {
+  list-style: none;
+}
+
+li {
+  display: inline-block;
+}
+
+a:target {
+  background-color: orange;
+  border-radius: 0.25em;
+}
+
+#solution-preview {
+  width: 100%;
+  height: 500px;
+  border: none;
+}
