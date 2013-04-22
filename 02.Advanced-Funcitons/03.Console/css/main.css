@@ -1,0 +1,31 @@
+
+* {
+  box-sizing: border-box;
+}
+
+#console-output {
+  display: block;
+  background-color: white;
+  padding: 0.5em;
+  font-family: Consolas, Lucida Console, monospace;
+}
+
+.console-message {
+  padding-left: 20px;
+  background-position: left 0.3em;
+  background-repeat: no-repeat;
+}
+
+.severity-level-log {
+  background-image: url(../img/log-icon.png);
+  color: rgb(0, 0, 255);
+}
+
+.severity-level-warning {
+  background-image: url(../img/warning-icon.png);
+  color: rgb(255, 165, 0);
+}
+.severity-level-error {
+  background-image: url(../img/error-icon.png);
+  color: rgb(255, 0, 0);
+}

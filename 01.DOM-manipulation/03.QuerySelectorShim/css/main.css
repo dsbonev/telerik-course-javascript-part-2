@@ -1,0 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+#main {
+  white-space: pre;
+}
+
+div {
+  display: inline-block; 
+}
+
+div:before {
+  content: '#'attr(id)'.'attr(class);
+}

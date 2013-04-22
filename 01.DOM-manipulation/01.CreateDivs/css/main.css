@@ -1,0 +1,13 @@
+
+output {
+  position: relative;
+  display: block;
+}
+
+html,
+body,
+form,
+output {
+  width: 100%;
+  height: 100%;
+}

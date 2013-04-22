@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+textarea {
+  display: block;
+  width: 90%;
+}
+
+.tag {
+  margin: 5px;
+}
+
+.tag:hover {
+  text-decoration: underline;
+}
