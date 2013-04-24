@@ -10,7 +10,6 @@
         case 'Undefined': return 'undefined';
         case 'Null': return 'null';
         case 'Object': var result = [];
-          //TODO HTMLElement
           result.push('{');
 
           for (var p in obj) {
@@ -42,6 +41,10 @@
         case 'Boolean':
         case 'Date':
         case 'Function': return obj.toString();
+        default:
+          if (obj instanceof HTMLElement) {
+            return 'HTMLElement:' + obj.tagName.toLowerCase();
+          }
       }
     };
 
@@ -103,7 +106,8 @@
       true,
       new Boolean(true),
       new Date,
-      function a(b, c) {return b + c;}
+      function a(b, c) {return b + c;},
+      document.body.firstElementChild
     ]);
 
   //https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Math/random
