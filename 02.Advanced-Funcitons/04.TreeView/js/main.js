@@ -43,8 +43,10 @@
       this.setElement(document.createElement('ul'));
 
       this.getElement().addEventListener('click', function (event) {
-        if (event.target.classList.contains('has-children')) {
-          new TreeItem().setElement(event.target).toggleCollapsed();
+        var treeItem = TreeItem.from(event.target);
+
+        if (treeItem !== null && treeItem.hasChildren()) {
+          treeItem.toggleCollapsed();
         }
       }, false);
     }
@@ -102,6 +104,9 @@
 
         return result;
       },
+      hasChildren: function () {
+        return this.getElement().classList.contains('has-children');
+      },
       toggleCollapsed: function () {
         var isCollapsed = this.getElement().classList.toggle('collapsed');
 
@@ -114,6 +119,29 @@
         }
       }
     });
+
+    TreeItem.from = function (element) {
+      var tagName,
+        result = null;
+
+      while (true) {
+        tagName = element.tagName.toLowerCase();
+
+        if (tagName === 'li') {
+          result = new this();
+          result.setElement(element);
+          break;
+        }
+
+        if (tagName === 'ul') {
+          break;
+        }
+
+        element = element.parentElement;
+      }
+
+      return result;
+    };
 
     var treeView;
 

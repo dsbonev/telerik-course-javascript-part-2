@@ -1,0 +1,45 @@
+
+header {
+  text-align: center;
+}
+
+#carousel {
+  width: 640px;
+  height: 480px;
+  margin: auto;
+  position: relative;
+}
+
+#carousel img {
+  position: absolute;
+  transition: opacity 2s;
+  opacity: 0;
+}
+
+#carousel .current {
+  opacity: 1;
+}
+
+#carousel .button {
+  position: absolute;
+  top: 1em;
+  text-decoration: none;
+  color: black;
+}
+
+#previous {
+  left: 1em;
+}
+
+#previous:before {
+  content: '\25C0';
+}
+
+#next {
+  left: 2em;
+}
+
+#next:after {
+  content: '\25B6';
+  left: 2em;
+}
