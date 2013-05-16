@@ -264,3 +264,22 @@ window.controls = (function () {
     }
   };
 })();
+
+
+
+window.imageGalleryRepository = (function () {
+  'use strict';
+
+
+
+  return {
+    load: function (key) {
+      return localStorage.getObject(key);
+    },
+    save: function (key, value) {
+      localStorage.setObject(key, value);
+    }
+  };
+})();
+
+

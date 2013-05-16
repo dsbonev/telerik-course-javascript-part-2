@@ -1,7 +1,4 @@
 (function() {
-
-
-
     if (!Storage.prototype.setObject) {
         Storage.prototype.setObject = function setObject(key, obj) {
             var jsonObj = JSON.stringify(obj);

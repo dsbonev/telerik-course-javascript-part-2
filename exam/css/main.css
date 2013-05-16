@@ -44,3 +44,7 @@
   visibility: hidden;
   height: 0;
 }
+
+#API_examples {
+  display: block;
+}
