@@ -249,6 +249,20 @@ window.controls = (function () {
 
   mixin(Album.prototype, HasItemLists);
 
+  Album.parse = function (data) {
+    var album = new Album(data.title);
+
+    data.images.forEach(function (itemData) {
+      album.imageList().add(Image.parse(itemData));
+    });
+
+    data.albums.forEach(function (itemData) {
+      album.albumList().add(Album.parse(itemData));
+    });
+
+    return album;
+  };
+
   //album title click changes visible state
   document.addEventListener('click', function (event) {
     var target = event.target;
@@ -312,7 +326,26 @@ window.controls = (function () {
     }
   });
 
+  Image.parse = function (data) {
+    return new Image(data.title, data.url);
+  };
+
   return {
+    buildImageGallery: function (selector, data) {
+      var gallery = new ImageGallery(selector);
+
+      data = data || {};
+
+      data.images.forEach(function (itemData) {
+        gallery.imageList().add(Image.parse(itemData));
+      });
+
+      data.albums.forEach(function (itemData) {
+        gallery.albumList().add(Album.parse(itemData));
+      });
+
+      return gallery;
+    },
     getImageGallery: function (selector) {
       return new ImageGallery(selector);
     }

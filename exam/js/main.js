@@ -59,3 +59,8 @@ console.log(imageGalleryRepository.load('test-storage'));
 var ninjaGallery = gallery;
 var ninjaGalleryData = ninjaGallery.getImageGalleryData();
 imageGalleryRepository.save('ninja-gallery', ninjaGalleryData);
+
+
+//Task 6
+var repositoryData = imageGalleryRepository.load('ninja-gallery');
+controls.buildImageGallery('#component_built_from_data_wrapper', repositoryData);
