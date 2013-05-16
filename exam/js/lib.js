@@ -29,7 +29,7 @@ window.Component = (function () {
 
   extend(Base, Object, {
     add: function (title) {
-      var item = new Item(title);
+      var item = new Image(title);
       this.items().push(item);
       return item;
     },
@@ -43,7 +43,7 @@ window.Component = (function () {
 
       }
     },
-    childrenContainerElement: function () {
+    childrenContainerElement: function (/* element */) {
       if (arguments.length > 0) {
         this._childrenContainerElement = arguments[0];
         return this;
@@ -73,7 +73,7 @@ window.Component = (function () {
 
       }
     },
-    items: function () {
+    items: function (/* list */) {
       if (arguments.length > 0) {
         this._items = arguments[0];
         return this;
@@ -99,21 +99,27 @@ window.Component = (function () {
     }
   });
 
-  function Accordion(selector) {
+  function ImageGallery(selector) {
     Base.apply(this, arguments);
 
     this.boundingElement(document.querySelector(selector))
       .element(document.createElement('div'))
-      .childrenContainerElement(document.createElement('ul'));
+      .childrenContainerElement(document.createElement('div'));
   }
 
-  extend(Accordion, Base);
+  extend(ImageGallery, Base, {
+    addImage: function (title, url) {
+      return new Image(title, url);
+    },
+    addAlbum: function (title) {
+      return new Album(title);
+    }
+  });
 
   function Item(title) {
     Base.apply(this, arguments);
 
-    this.element(document.createElement('li'))
-      .title(title)
+    this.title(title)
       .childrenContainerElement(document.createElement('ul'));
   }
 
@@ -121,7 +127,6 @@ window.Component = (function () {
     title: function (/* text */) {
       if (arguments.length > 0) {
         this._title = arguments[0];
-        this.element().textContent = this.title();
         return this;
 
       } else {
@@ -131,9 +136,28 @@ window.Component = (function () {
     }
   });
 
+  function Album(title) {
+    Item.apply(this, arguments);
+
+    this.element(document.createElement('li'))
+      .title(title)
+      .childrenContainerElement(document.createElement('div'));
+  }
+
+  extend(Album, Item);
+
+  function Image(title, url) {
+    Item.apply(this, arguments);
+
+    this.element(document.createElement('div'))
+      .childrenContainerElement(document.createElement('div'));
+  }
+
+  extend(Image, Item);
+
   return {
-    getAccordion: function (selector) {
-      return new Accordion(selector);
+    getImageGallery: function (selector) {
+      return new ImageGallery(selector);
     }
   };
 })();
