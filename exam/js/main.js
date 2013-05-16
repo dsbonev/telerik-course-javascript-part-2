@@ -5,7 +5,7 @@
 var gallery = controls.getImageGallery('#component_wrapper');
 
 gallery.addImage('ninja', 'images/ninja.png');
-gallery.addAlbum('an album');
+gallery.addAlbum('zan album');
 gallery.addImage('ninja <strong>2</strong>', 'images/logo.png');
 
 
@@ -68,3 +68,7 @@ controls.buildImageGallery('#component_built_from_data_wrapper', repositoryData)
 
 //Task 7
 //click an image to zoom it
+
+//Task 8
+//click an album title to sort all sibling alubms
+

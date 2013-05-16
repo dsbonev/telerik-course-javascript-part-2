@@ -125,7 +125,12 @@ window.controls = (function () {
       .element(document.createElement('div'))
       .childrenContainerElement(document.createElement('div'));
 
+    var sortEl = document.createElement('div');
+    sortEl.textContent = 'Sort Albums';
+    sortEl.classList.add('sort');
+    this.element().appendChild(sortEl);
     this.element().appendChild(this.childrenContainerElement());
+
     this.boundingElement().appendChild(this.element());
   }
 
@@ -138,6 +143,33 @@ window.controls = (function () {
       });
 
       return result;
+    }
+  });
+
+  //sort albums on click
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('sort')) {
+      var albumListEl = target.nextElementSibling;
+
+      var albumElements = toArray(albumListEl.children);
+
+      albumElements.sort(function (current, next) {
+        var currentTitle = current.firstElementChild.textContent.trim(),
+          nextElementTitle = next.firstElementChild.textContent.trim();
+
+        if ( currentTitle < nextElementTitle )
+          return -1;
+        if ( currentTitle > nextElementTitle )
+          return 1;
+        return 0;
+      });
+
+      albumElements.forEach(function (el) {
+        albumListEl.appendChild(el);
+      });
+
     }
   });
 
