@@ -2,16 +2,36 @@
 window.Component = (function () {
   'use strict';
 
-  function Accordion(selector) {
-    this.boundingElement(document.querySelector(selector))
-      .element(document.createElement('ul'))
+  var extend = (function () {
+    function Proxy() {}
+
+    return function (Child, Parent, childPrototypeProps) {
+      Proxy.prototype = Parent.prototype;
+      Child.prototype = new Proxy();
+      Child.prototype.constructor = Child;
+
+      childPrototypeProps = childPrototypeProps || {};
+
+      for (var prop in childPrototypeProps) {
+        if (childPrototypeProps.hasOwnProperty(prop)) {
+          Child.prototype[prop] = childPrototypeProps[prop];
+        }
+      }
+    };
+  })();
+
+  function Base() {
+    this.boundingElement(null)
+      .element(null)
       .items([])
       .rendered(false);
   }
 
-  Accordion.prototype = {
-    add: function (item) {
+  extend(Base, Object, {
+    add: function (title) {
+      var item = new Item(title);
       this.items().push(item);
+      return item;
     },
     boundingElement: function (/* element */) {
       if (arguments.length > 0) {
@@ -20,6 +40,16 @@ window.Component = (function () {
 
       } else {
         return this._boundingElement;
+
+      }
+    },
+    childrenContainerElement: function () {
+      if (arguments.length > 0) {
+        this._childrenContainerElement = arguments[0];
+        return this;
+
+      } else {
+        return this._childrenContainerElement;
 
       }
     },
@@ -55,39 +85,51 @@ window.Component = (function () {
     },
     render: function () {
       this.items().forEach(function (item) {
-        this.element().appendChild(item.render());
+        item.boundingElement(this.element());
+        this.childrenContainerElement().appendChild(item.render().element());
       }.bind(this));
 
       if (!this.rendered()) {
+        this.element().appendChild(this.childrenContainerElement());
         this.boundingElement().appendChild(this.element());
         this.rendered(true);
       }
-    },
-    constructor: Accordion
-  };
 
-  function Item(title) {
-    this.title(title);
-    this.rendered
+      return this;
+    }
+  });
+
+  function Accordion(selector) {
+    Base.apply(this, arguments);
+
+    this.boundingElement(document.querySelector(selector))
+      .element(document.createElement('div'))
+      .childrenContainerElement(document.createElement('ul'));
   }
 
-  Item.prototype = {
+  extend(Accordion, Base);
+
+  function Item(title) {
+    Base.apply(this, arguments);
+
+    this.element(document.createElement('li'))
+      .title(title)
+      .childrenContainerElement(document.createElement('ul'));
+  }
+
+  extend(Item, Base, {
     title: function (/* text */) {
       if (arguments.length > 0) {
         this._title = arguments[0];
+        this.element().textContent = this.title();
         return this;
 
       } else {
         return this._title;
 
       }
-    },
-    constructor: Item
-  };
-
-  function Base() {
-
-  }fds
+    }
+  });
 
   return {
     getAccordion: function (selector) {
