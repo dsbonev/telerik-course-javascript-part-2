@@ -3,7 +3,6 @@
   width: 300px;
   height: 200px;
   float: left;
-  margin-right: 0.5em;
   text-align: center;
 }
 
@@ -12,8 +11,25 @@
   max-height: 200px;
 }
 
+.album,
+.image {
+  border: 1px solid #888;
+  border-radius: 1em;
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
 .title {
   text-align: center;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.album > .title {
+  background: #ccc;
+  border-radius: 0.5em;
 }
 
 .imagelist > .children::after {

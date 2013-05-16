@@ -20,6 +20,21 @@ window.controls = (function () {
     };
   })();
 
+  function mixin(recievingObj /*, propertyList1, propertyList2, ...*/) {
+
+    for (var i = 1, length = arguments.length; i < length; i += 1) {
+      var propertyList = arguments[i];
+
+      for (var p in propertyList) {
+        if (propertyList.hasOwnProperty(p)) {
+          recievingObj[p] = propertyList[p];
+        }
+      }
+    }
+
+    return recievingObj;
+  }
+
   function Base() {
     this.boundingElement(null)
       .element(null)
@@ -111,15 +126,15 @@ window.controls = (function () {
 
     this.boundingElement(document.querySelector(selector))
       .element(document.createElement('div'))
-      .childrenContainerElement(document.createElement('div'))
-      .imageList(new ImageList(this.childrenContainerElement()))
-      .albumList(new AlbumList(this.childrenContainerElement()));
+      .childrenContainerElement(document.createElement('div'));
 
     this.element().appendChild(this.childrenContainerElement());
     this.boundingElement().appendChild(this.element());
   }
 
-  extend(ImageGallery, Base, {
+  extend(ImageGallery, Base);
+
+  var HasItemLists = {
     addImage: function (title, url) {
       var item = new Image(title, url);
       this.imageList().add(item);
@@ -132,6 +147,7 @@ window.controls = (function () {
         return this;
 
       } else {
+        this._imageList = this._imageList || new ImageList(this.childrenContainerElement());
         return this._imageList;
 
       }
@@ -148,11 +164,14 @@ window.controls = (function () {
         return this;
 
       } else {
+        this._albumList = this._albumList || new AlbumList(this.childrenContainerElement());
         return this._albumList;
 
       }
-    },
-  });
+    }
+  };
+
+  mixin(ImageGallery.prototype, HasItemLists);
 
   function Item(title) {
     Base.apply(this, arguments);
@@ -162,7 +181,12 @@ window.controls = (function () {
     }
 
     this.title(title)
-      .childrenContainerElement(document.createElement('div'));
+      .element(document.createElement('div'));
+
+    var titleEl = document.createElement('h6');
+    titleEl.classList.add('title');
+    titleEl.textContent = this.title();
+    this.element().appendChild(titleEl);
   }
 
   extend(Item, Base, {
@@ -181,23 +205,17 @@ window.controls = (function () {
   function Album(title) {
     Item.apply(this, arguments);
 
-    this.element(document.createElement('div'))
-      .title(title)
+    this
       .childrenContainerElement(document.createElement('div'));
 
-    var titleEl = document.createElement('h6');
-    titleEl.classList.add('title');
-    titleEl.textContent = this.title();
-    this.element().appendChild(titleEl);
+    this.element().appendChild(this.childrenContainerElement());
   }
 
   extend(Album, Item);
+  mixin(Album.prototype, HasItemLists);
 
   function Image(title, url) {
     Item.apply(this, arguments);
-
-    this.element(document.createElement('div'))
-      .childrenContainerElement(document.createElement('div'));
 
     var imgEl = document.createElement('img');
     imgEl.src = url;
