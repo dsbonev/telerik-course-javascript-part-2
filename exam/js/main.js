@@ -20,7 +20,42 @@ kidNinjas.addImage('ninja <strong>2</strong>', 'images/logo.png');
 ninjaAlbum.addImage('ninja <strong>2</strong>', 'images/logo.png');
 
 
+//Task 3
+//click album title to collapse/expand it
+
+
 //Task 4
-var imageGalleryData = [];
+var imageGalleryData = {
+  "images": [
+    {"title":"ninja","url":"images/ninja.png"},
+    {"title":"ninja <strong>2</strong>","url":"images/logo.png"}
+  ],
+  "albums": [
+    {
+      "title":"an album",
+      "images":[],
+      "albums":[]
+    },
+    {
+      "title":"js ninjas",
+      "images":[
+        {"title":"ninja","url":"images/ninja.png"}
+      ],
+      "albums":[
+        {
+          "title":"kid ninjas",
+          "images":[],
+          "albums":[]
+        }
+      ]
+    }
+  ]
+};
 imageGalleryRepository.save('test-storage', imageGalleryData);
 console.log(imageGalleryRepository.load('test-storage'));
+
+
+//Task 5
+var ninjaGallery = gallery;
+var ninjaGalleryData = ninjaGallery.getImageGalleryData();
+imageGalleryRepository.save('ninja-gallery', ninjaGalleryData);

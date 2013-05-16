@@ -106,7 +106,17 @@ window.controls = (function () {
     this.boundingElement().appendChild(this.element());
   }
 
-  extend(ImageList, Base);
+  extend(ImageList, Base, {
+    serialize: function () {
+      var result = [];
+
+      this.items().forEach(function (item) {
+        result.push(item.serialize());
+      });
+
+      return result;
+    }
+  });
 
   function AlbumList(boundingElement) {
     Base.apply(this, arguments);
@@ -119,7 +129,17 @@ window.controls = (function () {
     this.boundingElement().appendChild(this.element());
   }
 
-  extend(AlbumList, Base);
+  extend(AlbumList, Base, {
+    serialize: function () {
+      var result = [];
+
+      this.items().forEach(function (item) {
+        result.push(item.serialize());
+      });
+
+      return result;
+    }
+  });
 
   function ImageGallery(selector) {
     Base.apply(this, arguments);
@@ -132,7 +152,14 @@ window.controls = (function () {
     this.boundingElement().appendChild(this.element());
   }
 
-  extend(ImageGallery, Base);
+  extend(ImageGallery, Base, {
+    getImageGalleryData: function () {
+      return {
+        images: this.imageList().serialize(),
+        albums: this.albumList().serialize()
+      };
+    }
+  });
 
   var HasItemLists = {
     addImage: function (title, url) {
@@ -205,13 +232,21 @@ window.controls = (function () {
   function Album(title) {
     Item.apply(this, arguments);
 
-    this
-      .childrenContainerElement(document.createElement('div'));
+    this.childrenContainerElement(document.createElement('div'));
 
     this.element().appendChild(this.childrenContainerElement());
   }
 
-  extend(Album, Item);
+  extend(Album, Item, {
+    serialize: function () {
+      return {
+        title: this.title(),
+        images: this.imageList().serialize(),
+        albums: this.albumList().serialize()
+      };
+    }
+  });
+
   mixin(Album.prototype, HasItemLists);
 
   //album title click changes visible state
@@ -251,12 +286,31 @@ window.controls = (function () {
   function Image(title, url) {
     Item.apply(this, arguments);
 
+    this.url(url);
+
     var imgEl = document.createElement('img');
-    imgEl.src = url;
+    imgEl.src = this.url();
     this.element().appendChild(imgEl);
   }
 
-  extend(Image, Item);
+  extend(Image, Item, {
+    url: function (/* text */) {
+      if (arguments.length > 0) {
+        this._url = arguments[0];
+        return this;
+
+      } else {
+        return this._url;
+
+      }
+    },
+    serialize: function () {
+      return {
+        title: this.title(),
+        url: this.url()
+      };
+    }
+  });
 
   return {
     getImageGallery: function (selector) {
