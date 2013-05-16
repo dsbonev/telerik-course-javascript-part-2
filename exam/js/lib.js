@@ -330,6 +330,34 @@ window.controls = (function () {
     return new Image(data.title, data.url);
   };
 
+  //zoom image on click
+  var previewEl = document.querySelector('#preview');
+
+  previewEl.addEventListener('click', function (event) {
+    event.currentTarget.classList.remove('active');
+  }, false);
+
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.tagName.toLowerCase() === 'img') {
+      var parentElement = target.parentNode;
+
+      if (parentElement &&
+          parentElement.classList &&
+          parentElement.classList.contains('image')) {
+
+        var imgEl = target.cloneNode();
+        imgEl.style.width = parseInt(imgEl.naturalWidth) * 2 + 'px';
+        imgEl.style.height = parseInt(imgEl.naturalHeight) * 2 + 'px';
+
+        previewEl.innerHTML = '';
+        previewEl.appendChild(imgEl);
+        previewEl.classList.add('active');
+      }
+    }
+  }, false);
+
   return {
     buildImageGallery: function (selector, data) {
       var gallery = new ImageGallery(selector);

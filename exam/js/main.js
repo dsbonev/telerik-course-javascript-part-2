@@ -64,3 +64,7 @@ imageGalleryRepository.save('ninja-gallery', ninjaGalleryData);
 //Task 6
 var repositoryData = imageGalleryRepository.load('ninja-gallery');
 controls.buildImageGallery('#component_built_from_data_wrapper', repositoryData);
+
+
+//Task 7
+//click an image to zoom it
