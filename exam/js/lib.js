@@ -24,15 +24,9 @@ window.Component = (function () {
     this.boundingElement(null)
       .element(null)
       .items([])
-      .rendered(false);
   }
 
   extend(Base, Object, {
-    add: function (title) {
-      var item = new Image(title);
-      this.items().push(item);
-      return item;
-    },
     boundingElement: function (/* element */) {
       if (arguments.length > 0) {
         this._boundingElement = arguments[0];
@@ -56,20 +50,13 @@ window.Component = (function () {
     element: function (/* element */) {
       if (arguments.length > 0) {
         this._element = arguments[0];
+        if (this._element) {
+          this._element.classList.add(this.constructor.name);
+        }
         return this;
 
       } else {
         return this._element;
-
-      }
-    },
-    rendered: function (/* isRendered */) {
-      if (arguments.length > 0) {
-        this._rendered = !!arguments[0];
-        return this;
-
-      } else {
-        return this._rendered;
 
       }
     },
@@ -82,20 +69,6 @@ window.Component = (function () {
         return this._items;
 
       }
-    },
-    render: function () {
-      this.items().forEach(function (item) {
-        item.boundingElement(this.element());
-        this.childrenContainerElement().appendChild(item.render().element());
-      }.bind(this));
-
-      if (!this.rendered()) {
-        this.element().appendChild(this.childrenContainerElement());
-        this.boundingElement().appendChild(this.element());
-        this.rendered(true);
-      }
-
-      return this;
     }
   });
 
@@ -104,15 +77,44 @@ window.Component = (function () {
 
     this.boundingElement(document.querySelector(selector))
       .element(document.createElement('div'))
-      .childrenContainerElement(document.createElement('div'));
+      .childrenContainerElement(document.createElement('div'))
+      .images([])
+      .albums([]);
+
+    this.element().appendChild(this.childrenContainerElement());
+    this.boundingElement().appendChild(this.element());
   }
 
   extend(ImageGallery, Base, {
     addImage: function (title, url) {
-      return new Image(title, url);
+      var item = new Image(title, url);
+      this.images().push(item);
+      this.childrenContainerElement().appendChild(item.element());
+
+      return item;
+    },
+    images: function (/* list */) {
+      if (arguments.length > 0) {
+        this._images = arguments[0];
+        return this;
+
+      } else {
+        return this._images;
+
+      }
     },
     addAlbum: function (title) {
       return new Album(title);
+    },
+    albums: function (/* list */) {
+      if (arguments.length > 0) {
+        this._albums = arguments[0];
+        return this;
+
+      } else {
+        return this._albums;
+
+      }
     }
   });
 
@@ -151,6 +153,14 @@ window.Component = (function () {
 
     this.element(document.createElement('div'))
       .childrenContainerElement(document.createElement('div'));
+
+    var titleEl = document.createElement('div');
+    titleEl.textContent = this.title();
+    this.element().appendChild(titleEl);
+
+    var imgEl = document.createElement('img');
+    imgEl.src = url;
+    this.element().appendChild(imgEl);
   }
 
   extend(Image, Item);
