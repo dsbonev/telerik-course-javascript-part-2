@@ -214,6 +214,40 @@ window.controls = (function () {
   extend(Album, Item);
   mixin(Album.prototype, HasItemLists);
 
+  //album title click changes visible state
+  document.addEventListener('click', function (event) {
+    var target = event.target;
+
+    if (target.classList.contains('title')) {
+      var parentElement = target.parentNode;
+
+      if (parentElement &&
+          parentElement.classList &&
+          parentElement.classList.contains('album')) {
+
+        var collapsibleItems = toArray(parentElement.querySelectorAll('.album'));
+        var isCollapsed = parentElement.classList.toggle('collapsed');
+
+        if (isCollapsed) {
+          collapsibleItems.forEach(function (item) {
+            item.classList.add('collapsed');
+          });
+
+        } else {
+          collapsibleItems.forEach(function (item) {
+            item.classList.remove('collapsed');
+          });
+
+        }
+      }
+    }
+  }, false);
+
+  function toArray(list) {
+    return Array.prototype.slice.call(list || []);
+  }
+
+
   function Image(title, url) {
     Item.apply(this, arguments);
 

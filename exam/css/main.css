@@ -30,6 +30,11 @@
 .album > .title {
   background: #ccc;
   border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.album.collapsed > .children {
+  display: none;
 }
 
 .imagelist > .children::after {
