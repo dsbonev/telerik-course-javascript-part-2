@@ -380,8 +380,8 @@ window.controls = (function () {
           parentElement.classList.contains('image')) {
 
         var imgEl = target.cloneNode();
-        imgEl.style.width = parseInt(imgEl.naturalWidth) * 2 + 'px';
-        imgEl.style.height = parseInt(imgEl.naturalHeight) * 2 + 'px';
+        imgEl.style.width = parseInt(target.naturalWidth) * 2 + 'px';
+        imgEl.style.height = parseInt(target.naturalHeight) * 2 + 'px';
 
         previewEl.innerHTML = '';
         previewEl.appendChild(imgEl);
